@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using standard_webapi.Business;
+using standard_webapi.Business.Implementations;
 using standard_webapi.Models.DataContext;
 
 namespace standard_webapi
@@ -37,6 +39,9 @@ namespace standard_webapi
                         Description = "Just a ASP.NET Web Api using Entity Framework, AutoMapper and Swagger.",
                     });
             });
+            
+            //Dependency Injection
+            services.AddScoped<IClientBusiness, ClientImplementation>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
