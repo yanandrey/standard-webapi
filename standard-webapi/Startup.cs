@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using standard_webapi.Business;
 using standard_webapi.Business.Implementations;
+using standard_webapi.Data.Mappings;
 using standard_webapi.Models.DataContext;
 
 namespace standard_webapi
@@ -22,7 +24,10 @@ namespace standard_webapi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            //Controllers
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             //Database Connection
             var connection = Configuration["MySQLConnection:MySQLConnectionString"];
@@ -42,6 +47,9 @@ namespace standard_webapi
             
             //Dependency Injection
             services.AddScoped<IClientBusiness, ClientImplementation>();
+            
+            //AutoMapper
+            services.AddAutoMapper(typeof(AutoMapperConfiguration));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

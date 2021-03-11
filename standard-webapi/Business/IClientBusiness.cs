@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using standard_webapi.Data.DTOs;
 using standard_webapi.Models;
 
 namespace standard_webapi.Business
@@ -8,6 +9,6 @@ namespace standard_webapi.Business
     {
         Task<List<Client>> FindAll();
 
-        Task<Client> Register(Client client);
+        Task<Client> Register(ClientDTO clientDto);
     }
 }
