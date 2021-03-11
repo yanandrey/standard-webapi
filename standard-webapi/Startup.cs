@@ -1,7 +1,9 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using standard_webapi.Business;
 using standard_webapi.Business.Implementations;
 using standard_webapi.Data.Mappings;
+using standard_webapi.Data.Validation;
 using standard_webapi.Models.DataContext;
 
 namespace standard_webapi
@@ -27,10 +30,15 @@ namespace standard_webapi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //Controllers
+            //Controllers and Validations
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddFluentValidation(x =>
+                {
+                    x.RegisterValidatorsFromAssemblyContaining<ClientDTOValidation>();
+                    x.ValidatorOptions.LanguageManager.Culture = new CultureInfo("pt-BR");
+                });
             
             //Database Connection
             var connection = Configuration["MySQLConnection:MySQLConnectionString"];
