@@ -6,6 +6,8 @@ using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,6 +67,17 @@ namespace standard_webapi
             
             //AutoMapper
             services.AddAutoMapper(typeof(AutoMapperConfiguration));
+            
+            //API Versioning
+            services.AddApiVersioning(x =>
+            {
+                x.DefaultApiVersion = new ApiVersion(1, 0);
+                x.AssumeDefaultVersionWhenUnspecified = true;
+                x.ReportApiVersions = true;
+                x.ApiVersionReader = ApiVersionReader.Combine(
+                    new HeaderApiVersionReader("x-api_version"),
+                    new QueryStringApiVersionReader("x-api_version"));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

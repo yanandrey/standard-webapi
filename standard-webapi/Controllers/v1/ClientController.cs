@@ -9,6 +9,7 @@ using standard_webapi.Data.DTOs;
 namespace standard_webapi.Controllers.v1
 {
     [ApiController]
+    [ApiVersion("1")]
     [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
